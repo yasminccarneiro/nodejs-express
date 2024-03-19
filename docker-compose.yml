@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+  codelab-app:
+    container_name: codelab-app
+    build:
+      context: .docker/node
+      dockerfile: Dockerfile
+      args:
+        - NODE_ENV=development
+    entrypoint: .docker/node/entrypoint.sh  
+    volumes: 
+      - .:/home/node/app
+
+    ports: 
+      - '3000:3000'
+
+  codelab-pg:
+    container_name: codelab-pg
+    image: postgres:16.2
+    environment:
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER=postgres
+    volumes:
+      - '.data:/var/lib/postgresql/data'
+    ports:
+      - '5433:5432'
